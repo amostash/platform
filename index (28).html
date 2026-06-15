@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lifenome IP — Scientific Due Diligence</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --ink:#0a0e1a;--ink2:#2c3550;--ink3:#5a6a8a;--ink4:#94a4c4;
+  --paper:#fff;--sheet:#f4f7fb;--sheet2:#eef3f9;--border:#dde6f0;--border2:#c7d6e8;
+  --blue:#1452d4;--blue-lt:#e8effe;
+  /* evidence-tier strength scale */
+  --ev-vitalage:#0f9b8e;--ev-vitalage-bg:#e3f6f3;
+  --ev-methyl:#1aa6a6;--ev-methyl-bg:#e2f5f5;
+  --ev-wgs:#1452d4;--ev-wgs-bg:#e8effe;
+  --ev-poly:#3a6fe0;--ev-poly-bg:#eaf0fd;
+  --ev-exome:#6b4bd6;--ev-exome-bg:#efeafb;
+  --ev-composite:#c98a17;--ev-composite-bg:#fbf2dd;
+  --ev-rec:#7a879f;--ev-rec-bg:#eef1f6;
+  --s1:0 1px 3px rgba(10,14,26,.06);--s2:0 4px 20px rgba(10,14,26,.10);
+  --r:11px;
+}
+html,body{height:100%}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--sheet);color:var(--ink);font-size:14px;line-height:1.5}
+.mono{font-family:'DM Mono',monospace}
+button{font-family:inherit;cursor:pointer;border:none;background:none}
+a{color:var(--blue);text-decoration:none}
+
+/* ── Shell ── */
+.shell{display:grid;grid-template-columns:248px 1fr;height:100vh}
+.side{background:var(--ink);color:#fff;display:flex;flex-direction:column;overflow:hidden}
+.side-top{padding:22px 20px 18px;border-bottom:1px solid rgba(255,255,255,.08)}
+.brand{display:flex;align-items:center;gap:11px}
+.brand img{height:38px;width:38px;object-fit:contain;background:#fff;border-radius:9px;padding:3px}
+.brand-txt b{font-family:'Sora';font-weight:700;font-size:14px;display:block;letter-spacing:.2px}
+.brand-txt span{font-size:11px;color:#9fb0d4}
+.side-sub{font-size:11px;color:#8294ba;margin-top:14px;line-height:1.5}
+.nav{padding:14px 12px;flex:1;overflow-y:auto}
+.nav-lbl{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#6f80a6;margin:14px 10px 7px}
+.nav-item{display:flex;align-items:center;gap:11px;width:100%;padding:9px 12px;border-radius:8px;color:#c6d2ea;font-size:13.5px;font-weight:500;text-align:left;transition:.13s}
+.nav-item:hover{background:rgba(255,255,255,.06);color:#fff}
+.nav-item.on{background:var(--blue);color:#fff}
+.nav-item .ic{width:18px;text-align:center;font-size:13px;opacity:.9}
+.nav-item .ct{margin-left:auto;font-size:11px;color:#7e8fb6;font-family:'DM Mono'}
+.nav-item.on .ct{color:#cdd9f5}
+.side-foot{padding:13px 18px;border-top:1px solid rgba(255,255,255,.08);font-size:10.5px;color:#6f80a6;line-height:1.5}
+
+.main{overflow-y:auto;position:relative}
+.topbar{position:sticky;top:0;z-index:20;background:rgba(244,247,251,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);
+  padding:13px 30px;display:flex;align-items:center;gap:16px}
+.crumb{font-size:12.5px;color:var(--ink3)}
+.crumb b{color:var(--ink);font-weight:600}
+.srch{margin-left:auto;position:relative;width:340px;max-width:42vw}
+.srch input{width:100%;padding:9px 32px 9px 13px;border:1.5px solid var(--border);border-radius:9px;font-family:inherit;font-size:13px;background:#fff;outline:none;transition:.15s}
+.srch input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(20,82,212,.1)}
+.srch .x{position:absolute;right:9px;top:50%;transform:translateY(-50%);color:var(--ink4);font-size:16px;display:none}
+.srch.has .x{display:block}
+.wrap{padding:28px 30px 60px;max-width:1180px}
+
+/* ── headings ── */
+.h-eyebrow{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:7px}
+.h-title{font-family:'Sora';font-size:25px;font-weight:700;letter-spacing:-.4px;margin-bottom:5px}
+.h-sub{color:var(--ink3);font-size:13.5px;max-width:680px;margin-bottom:22px}
+
+/* ── modality stack (hero) ── */
+.stack{display:flex;flex-direction:column;gap:7px;margin-bottom:10px}
+.grp-lbl{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink4);font-weight:600;margin:14px 2px 3px}
+.grp-lbl:first-child{margin-top:0}
+.mrow{display:grid;grid-template-columns:142px 1fr auto;align-items:center;gap:14px;background:#fff;border:1.5px solid var(--border);
+  border-radius:10px;padding:11px 15px;transition:.13s;cursor:pointer;text-align:left;width:100%}
+.mrow:hover{border-color:var(--border2);box-shadow:var(--s1);transform:translateX(2px)}
+.mrow.on{border-color:var(--blue);box-shadow:0 0 0 2px rgba(20,82,212,.12)}
+.mrow .mname{display:flex;align-items:center;gap:9px;font-weight:600;font-size:13.5px}
+.mdot{width:9px;height:9px;border-radius:3px;flex:none}
+.mrow .mbar{height:7px;background:var(--sheet2);border-radius:4px;overflow:hidden}
+.mrow .mbar i{display:block;height:100%;border-radius:4px}
+.mrow .mct{font-family:'DM Mono';font-size:13px;color:var(--ink2);font-weight:500;min-width:48px;text-align:right}
+.mrow .mct span{color:var(--ink4);font-size:11px}
+
+/* ── filter bar ── */
+.fbar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:22px 0 16px;padding-top:18px;border-top:1px solid var(--border)}
+.fbar .lbl{font-size:12px;color:var(--ink3);font-weight:600}
+.chip{padding:5px 11px;border:1.5px solid var(--border);border-radius:20px;background:#fff;font-size:12px;color:var(--ink2);font-weight:500;transition:.12s}
+.chip:hover{border-color:var(--border2)}
+.chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.spacer{margin-left:auto;font-size:12px;color:var(--ink3);font-family:'DM Mono'}
+
+/* ── insight cards ── */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:13px}
+.card{background:#fff;border:1.5px solid var(--border);border-radius:11px;padding:15px 16px 14px;cursor:pointer;transition:.13s;position:relative;overflow:hidden}
+.card:hover{border-color:var(--border2);box-shadow:var(--s2);transform:translateY(-2px)}
+.card::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--bar,var(--border2))}
+.card-top{display:flex;align-items:flex-start;gap:8px;margin-bottom:7px}
+.card-name{font-family:'Sora';font-weight:600;font-size:14px;line-height:1.3;flex:1}
+.card-desc{font-size:12.5px;color:var(--ink3);line-height:1.5;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card-meta{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.ev-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 9px;border-radius:20px;font-size:11px;font-weight:600;white-space:nowrap}
+.ev-badge .d{width:6px;height:6px;border-radius:50%}
+.tag{font-size:10.5px;padding:2px 8px;border-radius:5px;background:var(--sheet2);color:var(--ink3);font-weight:500}
+.tag.mod{font-family:'DM Mono';background:var(--blue-lt);color:var(--blue)}
+.comp-flag{font-size:10.5px;color:var(--ev-composite);font-weight:600}
+
+/* ── program grid ── */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.pcard{border-radius:13px;overflow:hidden;border:1.5px solid var(--border);background:#fff;cursor:pointer;transition:.14s}
+.pcard:hover{box-shadow:var(--s2);transform:translateY(-3px)}
+.pcard .ph{height:84px;background-size:cover;background-position:center;position:relative}
+.pcard .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent,rgba(0,0,0,.35))}
+.pcard .pb{padding:13px 15px 15px}
+.pcard .pn{font-family:'Sora';font-weight:700;font-size:15px}
+.pcard .psub{font-size:11.5px;color:var(--ink4);margin-bottom:8px}
+.pcard .pd{font-size:12px;color:var(--ink3);line-height:1.5;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;margin-bottom:10px}
+.pcard .pstats{display:flex;gap:14px;font-family:'DM Mono';font-size:12px}
+.pcard .pstats b{color:var(--ink);font-weight:500}.pcard .pstats span{color:var(--ink4);font-size:10.5px;display:block}
+
+/* ── exome panels ── */
+.exome-cat{margin-bottom:8px;border:1.5px solid var(--border);border-radius:11px;background:#fff;overflow:hidden}
+.exome-cat-h{display:flex;align-items:center;gap:11px;padding:13px 16px;cursor:pointer;font-weight:600;font-size:14px}
+.exome-cat-h .ct{margin-left:auto;font-family:'DM Mono';font-size:12px;color:var(--ink4)}
+.exome-cat-h .car{transition:.2s;color:var(--ink4)}
+.exome-cat.open .car{transform:rotate(90deg)}
+.exome-panels{display:none;padding:4px 16px 14px;flex-wrap:wrap;gap:7px}
+.exome-cat.open .exome-panels{display:flex}
+.pan-chip{padding:6px 11px;border:1.5px solid var(--border);border-radius:8px;font-size:12px;color:var(--ink2);background:var(--sheet);transition:.12s}
+.pan-chip:hover{border-color:var(--ev-exome);color:var(--ev-exome)}
+.pan-chip b{font-family:'DM Mono';color:var(--ink4);font-weight:500;font-size:11px;margin-left:5px}
+
+/* ── tech cards ── */
+.tcard{background:#fff;border:1.5px solid var(--border);border-radius:13px;padding:20px 22px;margin-bottom:14px}
+.tcard h3{font-family:'Sora';font-size:17px;font-weight:700;margin-bottom:3px}
+.tcard .tt{font-size:12px;color:var(--blue);font-weight:600;margin-bottom:11px}
+.tcard .claim{font-size:13.5px;color:var(--ink2);line-height:1.55;margin-bottom:15px}
+.tsec{margin-bottom:13px}
+.tsec .sh{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink4);font-weight:600;margin-bottom:6px}
+.tsec ul{list-style:none}.tsec li{font-size:12.5px;color:var(--ink2);line-height:1.55;padding-left:15px;position:relative;margin-bottom:3px}
+.tsec li::before{content:"";position:absolute;left:2px;top:8px;width:5px;height:5px;border-radius:50%;background:var(--border2)}
+.metric-row{display:flex;gap:8px;flex-wrap:wrap}
+.metric{background:var(--sheet);border:1px solid var(--border);border-radius:8px;padding:8px 12px;min-width:120px}
+.metric .mv{font-family:'DM Mono';font-size:14px;font-weight:500;color:var(--ink)}
+.metric .ml{font-size:10.5px;color:var(--ink4)}
+.caveats{background:#fdf6e8;border:1px solid #f0dcae;border-radius:9px;padding:11px 14px}
+.caveats .sh{color:#a06f12}
+.caveats li::before{background:#d6a23a}
+.caveats li{color:#7d5a16}
+
+/* ── drilldown ── */
+.ov{position:fixed;inset:0;background:rgba(10,14,26,.5);backdrop-filter:blur(3px);z-index:100;display:none;justify-content:flex-end}
+.ov.show{display:flex}
+.panel{width:min(640px,94vw);height:100%;background:var(--sheet);overflow-y:auto;box-shadow:-8px 0 40px rgba(0,0,0,.2);animation:slideIn .22s ease}
+@keyframes slideIn{from{transform:translateX(30px);opacity:.6}to{transform:translateX(0);opacity:1}}
+.p-hd{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);padding:20px 26px 17px;z-index:2}
+.p-close{position:absolute;top:16px;right:20px;width:30px;height:30px;border-radius:8px;background:var(--sheet);color:var(--ink3);font-size:18px;display:flex;align-items:center;justify-content:center;transition:.12s}
+.p-close:hover{background:var(--sheet2);color:var(--ink)}
+.p-name{font-family:'Sora';font-size:20px;font-weight:700;line-height:1.25;margin:0 36px 9px 0;letter-spacing:-.3px}
+.p-hd-meta{display:flex;gap:7px;flex-wrap:wrap;align-items:center}
+.lens-tog{display:inline-flex;background:var(--sheet);border:1.5px solid var(--border);border-radius:9px;padding:3px;margin-left:auto}
+.lens-tog button{padding:5px 13px;border-radius:7px;font-size:12px;font-weight:600;color:var(--ink3);transition:.12s}
+.lens-tog button.on{background:#fff;color:var(--ink);box-shadow:var(--s1)}
+.p-body{padding:22px 26px 50px}
+.blk{background:#fff;border:1.5px solid var(--border);border-radius:12px;padding:17px 19px;margin-bottom:13px}
+.blk-h{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink4);font-weight:600;margin-bottom:11px;display:flex;align-items:center;gap:8px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:7px 14px;font-size:13px}
+.kv dt{color:var(--ink4);font-weight:500}.kv dd{color:var(--ink2)}
+.formula{font-family:'DM Mono';font-size:12px;background:var(--ink);color:#d4e0fb;padding:14px 16px;border-radius:9px;line-height:1.65;white-space:pre-wrap;overflow-x:auto}
+.mk-chips{display:flex;gap:6px;flex-wrap:wrap}
+.mk{padding:5px 11px;background:var(--blue-lt);color:var(--blue);border-radius:7px;font-size:12px;font-weight:500;cursor:pointer;transition:.12s;border:1.5px solid transparent}
+.mk:hover{border-color:var(--blue)}
+.ev-head{display:flex;align-items:center;gap:10px;margin-bottom:13px}
+.ev-strength{display:flex;gap:3px}.ev-strength i{width:18px;height:5px;border-radius:3px;background:var(--border2)}
+.tech-link{font-size:12.5px;font-weight:600;cursor:pointer}
+.lens-clinical,.lens-defense{display:none}
+.panel[data-lens="clinical"] .lens-clinical{display:block}
+.panel[data-lens="defense"] .lens-defense{display:block}
+
+/* states */
+.empty{text-align:center;padding:70px 20px;color:var(--ink3)}
+.empty .big{font-family:'Sora';font-size:17px;color:var(--ink2);margin-bottom:6px}
+.loading{display:flex;align-items:center;gap:10px;color:var(--ink3);font-size:13px;padding:30px}
+.spin{width:16px;height:16px;border:2px solid var(--border2);border-top-color:var(--blue);border-radius:50%;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+.inline-load{font-size:12px;color:var(--blue);display:inline-flex;align-items:center;gap:7px;padding:4px 0}
+.err{background:#fdecea;border:1px solid #f5c2bd;color:#a8352a;padding:16px 20px;border-radius:11px;font-size:13px;line-height:1.6}
+.err b{display:block;margin-bottom:4px;font-family:'Sora'}
+.err code{font-family:'DM Mono';background:#fff;padding:1px 6px;border-radius:4px;font-size:12px}
+@media(max-width:760px){.shell{grid-template-columns:1fr}.side{display:none}.srch{width:auto;flex:1}.wrap{padding:20px 16px 50px}}
+</style>
+</head>
+<body>
+<div class="shell">
+  <aside class="side">
+    <div class="side-top">
+      <div class="brand">
+        <img src="data:image/jpeg;base64,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" alt="Lifenome">
+        <div class="brand-txt"><b>Lifenome IP</b><span>Scientific Due Diligence</span></div>
+      </div>
+      <div class="side-sub">Layered explorer over the full biomarker & insight catalog, with evidence woven into every assessment.</div>
+    </div>
+    <nav class="nav" id="nav"></nav>
+    <div class="side-foot">Prepared for scientific review. Evidence tiers are derived and conservative — verify before external citation.</div>
+  </aside>
+  <main class="main">
+    <div class="topbar">
+      <div class="crumb" id="crumb"></div>
+      <div class="srch" id="srchWrap">
+        <input id="srch" placeholder="Search insights or biomarkers…" autocomplete="off">
+        <span class="x" onclick="clearSrch()">&times;</span>
+      </div>
+    </div>
+    <div class="wrap" id="view"></div>
+  </main>
+</div>
+
+<div class="ov" id="ov" onclick="if(event.target===this)closePanel()">
+  <div class="panel" id="panel" data-lens="clinical"></div>
+</div>
+
+<script>
+/* ───────── config / metadata ───────── */
+const MODS = {
+  dna_exome:{lbl:"Exome (clinical)",grp:"Genomic",c:"#6b4bd6"},
+  dna_wgs:{lbl:"Whole-genome PRS",grp:"Genomic",c:"#1452d4"},
+  dna_array:{lbl:"Array PRS",grp:"Genomic",c:"#3a6fe0"},
+  epigenetics:{lbl:"Epigenetics",grp:"Molecular",c:"#1aa6a6"},
+  blood:{lbl:"Blood",grp:"Molecular",c:"#0f9b8e"},
+  micro_16s:{lbl:"Microbiome 16S",grp:"Molecular",c:"#3a9d6e"},
+  micro_wgs:{lbl:"Microbiome WGS",grp:"Molecular",c:"#4caE7e"},
+  physiological:{lbl:"Physiological",grp:"Physiological",c:"#c98a17"},
+  wearable:{lbl:"Wearable",grp:"Physiological",c:"#d69a2a"},
+  functional:{lbl:"Functional",grp:"Physiological",c:"#e0a838"},
+  lifestyle:{lbl:"Lifestyle",grp:"Behavioral",c:"#7a879f"},
+  recommendation:{lbl:"Recommendation",grp:"Output",c:"#94a4c4"}
+};
+const GRP_ORDER=["Genomic","Molecular","Physiological","Behavioral","Output"];
+const TIERS = {
+  whitepaper_vitalage:{lbl:"VitalAge validated",c:"--ev-vitalage",bg:"--ev-vitalage-bg",s:5},
+  whitepaper_methylation:{lbl:"Methylation age",c:"--ev-methyl",bg:"--ev-methyl-bg",s:4},
+  wgs_polygenic:{lbl:"WGS polygenic",c:"--ev-wgs",bg:"--ev-wgs-bg",s:3},
+  polygenic_method:{lbl:"Array polygenic",c:"--ev-poly",bg:"--ev-poly-bg",s:3},
+  exome_clinical:{lbl:"Exome clinical",c:"--ev-exome",bg:"--ev-exome-bg",s:2},
+  composite_literature:{lbl:"Composite / heuristic",c:"--ev-composite",bg:"--ev-composite-bg",s:1},
+  recommendation:{lbl:"Recommendation",c:"--ev-rec",bg:"--ev-rec-bg",s:0}
+};
+function cssv(v){return getComputedStyle(document.documentElement).getPropertyValue(v)}
+
+/* ───────── state ───────── */
+const S={core:[],exome:[],bm:[],val:null,progs:[],panels:null,
+  insMap:new Map(),bmMap:new Map(),exomeLoaded:false,exomeLoading:null,
+  view:"layers",mod:null,prog:null,q:""};
+function allInsights(){return S.exomeLoaded? S.core.concat(S.exome): S.core}
+
+/* ───────── data load ───────── */
+async function boot(){
+  try{
+    const [core,bm,val,progs,panels]=await Promise.all([
+      fetch('catalog_core.json').then(r=>r.json()),
+      fetch('biomarkers_index.json').then(r=>r.json()),
+      fetch('validation.json').then(r=>r.json()),
+      fetch('programs_meta.json').then(r=>r.json()),
+      fetch('exome_panels.json').then(r=>r.json())
+    ]);
+    S.core=core.insights; S.bm=bm.biomarkers; S.val=val; S.progs=progs; S.panels=panels;
+    S.core.forEach(i=>S.insMap.set(i.name.toLowerCase(),i));
+    S.bm.forEach(b=>S.bmMap.set(b.biomarker.toLowerCase(),b));
+    renderNav(); route('layers');
+  }catch(e){
+    document.getElementById('view').innerHTML=
+     `<div class="err"><b>Data files not found</b>This app reads its catalog from JSON files in the same folder. Place <code>catalog_core.json</code>, <code>catalog_exome.json</code>, <code>biomarkers_index.json</code>, <code>validation.json</code>, <code>programs_meta.json</code> and <code>exome_panels.json</code> next to this file, then serve the folder (e.g. <code>python -m http.server</code>) and reload.<br><br>Error: ${e.message}</div>`;
+  }
+}
+async function ensureExome(){
+  if(S.exomeLoaded)return true;
+  if(S.exomeLoading)return S.exomeLoading;
+  S.exomeLoading=fetch('catalog_exome.json').then(r=>r.json()).then(d=>{
+    S.exome=d.insights; S.exome.forEach(i=>S.insMap.set(i.name.toLowerCase(),i));
+    S.exomeLoaded=true; return true;
+  });
+  return S.exomeLoading;
+}
+
+/* ───────── nav ───────── */
+const NAV=[
+  {id:"layers",ic:"▤",lbl:"Layer Explorer"},
+  {id:"biomarkers",ic:"◇",lbl:"Biomarker Query"},
+  {id:"programs",ic:"❑",lbl:"Programs"},
+  {id:"exome",ic:"⬡",lbl:"Exome Panels"},
+  {id:"tech",ic:"✓",lbl:"Technologies"}
+];
+function renderNav(){
+  const counts={layers:S.core.length+"+", biomarkers:S.bm.length, programs:S.progs.length,
+    exome:"3,098", tech:S.val.technologies.length};
+  document.getElementById('nav').innerHTML='<div class="nav-lbl">Explore</div>'+
+    NAV.map(n=>`<button class="nav-item${S.view===n.id?' on':''}" onclick="route('${n.id}')">
+      <span class="ic">${n.ic}</span>${n.lbl}<span class="ct">${counts[n.id]||''}</span></button>`).join('');
+}
+function route(v){S.view=v;S.mod=null;S.prog=null;renderNav();render();window.scrollTo(0,0)}
+
+/* ───────── helpers ───────── */
+function evBadge(i){const t=TIERS[i.evidence.tier]||TIERS.composite_literature;
+  return `<span class="ev-badge" style="background:${cssv(t.bg)};color:${cssv(t.c)}"><span class="d" style="background:${cssv(t.c)}"></span>${t.lbl}</span>`}
+function tierColor(i){return cssv((TIERS[i.evidence.tier]||TIERS.composite_literature).c)}
+function modTag(i){const m=MODS[i.src]||{lbl:i.src};return `<span class="tag mod">${m.lbl}</span>`}
+function insCard(i){
+  return `<div class="card" style="--bar:${tierColor(i)}" onclick="openIns('${esc(i.name)}')">
+    <div class="card-top"><div class="card-name">${i.name}</div></div>
+    <div class="card-desc">${i.desc||'—'}</div>
+    <div class="card-meta">${evBadge(i)}${modTag(i)}${i.competitor?`<span class="comp-flag">vs ${i.competitor}</span>`:''}</div>
+  </div>`}
+function esc(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;')}
+function crumb(parts){document.getElementById('crumb').innerHTML=parts.map((p,k)=>k===parts.length-1?`<b>${p}</b>`:p).join(' › ')}
+
+/* ───────── render dispatch ───────── */
+function render(){
+  const v=document.getElementById('view');
+  if(S.q){return renderSearch(v)}
+  if(S.view==='layers')renderLayers(v);
+  else if(S.view==='biomarkers')renderBiomarkers(v);
+  else if(S.view==='programs')renderPrograms(v);
+  else if(S.view==='exome')renderExome(v);
+  else if(S.view==='tech')renderTech(v);
+}
+
+/* ── Layer Explorer ── */
+function renderLayers(v){
+  crumb(['Layer Explorer', S.mod?MODS[S.mod].lbl:'All modalities']);
+  const counts={}; allInsights().forEach(i=>counts[i.src]=(counts[i.src]||0)+1);
+  counts.dna_exome=counts.dna_exome||3098;
+  const max=Math.max(...Object.values(counts));
+  let stack='';
+  GRP_ORDER.forEach(g=>{
+    const rows=Object.keys(MODS).filter(m=>MODS[m].grp===g&&counts[m]);
+    if(!rows.length)return;
+    stack+=`<div class="grp-lbl">${g}</div>`;
+    rows.sort((a,b)=>counts[b]-counts[a]).forEach(m=>{
+      const c=counts[m],pct=Math.max(3,c/max*100);
+      stack+=`<button class="mrow${S.mod===m?' on':''}" onclick="selMod('${m}')">
+        <div class="mname"><span class="mdot" style="background:${MODS[m].c}"></span>${MODS[m].lbl}</div>
+        <div class="mbar"><i style="width:${pct}%;background:${MODS[m].c}"></i></div>
+        <div class="mct">${c.toLocaleString()}<span> insights</span></div></button>`;
+    });
+  });
+  let list='';
+  if(S.mod){
+    const items=allInsights().filter(i=>i.src===S.mod);
+    list=`<div class="fbar"><span class="lbl">${MODS[S.mod].lbl}</span>
+      <button class="chip" onclick="selMod(null)">← all modalities</button>
+      <span class="spacer">${items.length.toLocaleString()} insights</span></div>
+      <div class="cards">${items.slice(0,300).map(insCard).join('')}</div>
+      ${items.length>300?`<div class="empty" style="padding:24px">Showing first 300 of ${items.length.toLocaleString()}. Use search to narrow.</div>`:''}`;
+  }
+  v.innerHTML=`<div class="h-eyebrow">Data modality → insight → biomarker</div>
+    <div class="h-title">The assessment stack</div>
+    <div class="h-sub">Every Lifenome insight, organized by the data modality that produces it. Bar width = number of insights. Select a layer to drill in; each insight carries its evidence tier.</div>
+    <div class="stack">${stack}</div>${list}`;
+}
+async function selMod(m){
+  if(m==='dna_exome'&&!S.exomeLoaded){
+    document.getElementById('view').insertAdjacentHTML('beforeend','<div class="loading" id="ldx"><span class="spin"></span>Loading exome library (3,098 insights)…</div>');
+    await ensureExome();
+  }
+  S.mod=m;render()
+}
+
+/* ── Biomarker Query ── */
+function renderBiomarkers(v){
+  crumb(['Biomarker Query']);
+  v.innerHTML=`<div class="h-eyebrow">${S.bm.length.toLocaleString()} biomarkers across the catalog</div>
+    <div class="h-title">Biomarker query</div>
+    <div class="h-sub">Search any of the ${S.bm.length.toLocaleString()} biomarkers to see which insights and programs consume it, and through which data modalities. Type in the search bar above, or browse the most-referenced below.</div>
+    <div class="cards" id="bmcards">${S.bm.slice(0,60).map(bmCard).join('')}</div>`;
+}
+function bmCard(b){
+  const mods=b.srcs.map(s=>MODS[s]?MODS[s].lbl:s).slice(0,3).join(', ');
+  return `<div class="card" onclick="openBm('${esc(b.biomarker)}')">
+    <div class="card-top"><div class="card-name">${b.biomarker}</div></div>
+    <div class="card-meta"><span class="tag mono">${b.insight_count} insight${b.insight_count!=1?'s':''}</span>
+      <span class="tag">${mods||'—'}</span></div></div>`;
+}
+
+/* ── Programs ── */
+function renderPrograms(v){
+  crumb(['Programs', S.prog?S.progs.find(p=>p.id===S.prog).name:'']);
+  if(S.prog){
+    const p=S.progs.find(x=>x.id===S.prog);
+    const items=allInsights().filter(i=>i.programs.includes(S.prog));
+    v.innerHTML=`<div class="h-eyebrow" style="color:${p.color}">${p.sub||''}</div>
+      <div class="h-title">${p.name}</div><div class="h-sub">${p.desc||''}</div>
+      <div class="fbar"><button class="chip" onclick="S.prog=null;render()">← all programs</button>
+      <span class="spacer">${items.length.toLocaleString()} insights loaded${p.insight_count>items.length?` of ${p.insight_count.toLocaleString()} (load exome to see all)`:''}</span></div>
+      <div class="cards">${items.slice(0,300).map(insCard).join('')}</div>`;
+    if(p.insight_count>items.length){ensureExome().then(()=>{if(S.prog===p.id)render()})}
+    return;
+  }
+  v.innerHTML=`<div class="h-eyebrow">14 precision-health programs</div>
+    <div class="h-title">Programs</div><div class="h-sub">Each program bundles insights across modalities for a clinical or wellness vertical. Counts reflect the full catalog.</div>
+    <div class="pgrid">${S.progs.map(p=>`
+      <div class="pcard" onclick="openProg('${p.id}')">
+        <div class="ph" style="background-image:url('${p.img}')"></div>
+        <div class="pb"><div class="pn">${p.name}</div><div class="psub">${p.sub||''}</div>
+        <div class="pd">${p.desc||''}</div>
+        <div class="pstats"><div><b>${(p.insight_count||0).toLocaleString()}</b><span>insights</span></div>
+        <div><b>${(p.marker_count||0).toLocaleString()}</b><span>markers</span></div></div></div>
+      </div>`).join('')}</div>`;
+}
+function openProg(id){S.prog=id;render();window.scrollTo(0,0)}
+
+/* ── Exome Panels ── */
+async function renderExome(v){
+  crumb(['Exome Panels']);
+  v.innerHTML=`<div class="h-eyebrow">Whole-exome clinical reporting · ACMG-tiered</div>
+    <div class="h-title">Exome panels</div>
+    <div class="h-sub">3,096 traits across 132 curated panels in 14 medical domains, sourced from ClinGen, CGD, DECIPHER/DDG2P, ClinVar and HGMD. This breadth is the core of the genomic-coverage claim. Pipeline stages flagged "in development" are noted in each trait's evidence.</div>`;
+  const cats=Object.keys(S.panels).sort();
+  v.innerHTML+=cats.map((cat,k)=>{
+    const pans=S.panels[cat];const tot=Object.values(pans).reduce((a,b)=>a+b,0);
+    const chips=Object.keys(pans).sort().map(pn=>`<button class="pan-chip" onclick="openPanel('${esc(cat)}','${esc(pn)}')">${pn}<b>${pans[pn]}</b></button>`).join('');
+    return `<div class="exome-cat" id="ec${k}"><div class="exome-cat-h" onclick="document.getElementById('ec${k}').classList.toggle('open')">
+      <span class="car">▸</span>${cat.replace(/-/g,' ')}<span class="ct">${Object.keys(pans).length} panels · ${tot} traits</span></div>
+      <div class="exome-panels">${chips}</div></div>`;
+  }).join('');
+}
+async function openPanel(cat,pan){
+  await ensureExome();
+  const items=S.exome.filter(i=>{const t=i.taxonomy||{};return t.category===cat&&t.panel===pan});
+  const v=document.getElementById('view');
+  crumb(['Exome Panels',cat.replace(/-/g,' '),pan]);
+  v.innerHTML=`<div class="h-eyebrow" style="color:var(--ev-exome)">${cat.replace(/-/g,' ')}</div>
+    <div class="h-title">${pan}</div>
+    <div class="fbar"><button class="chip" onclick="route('exome')">← all panels</button>
+    <span class="spacer">${items.length} traits</span></div>
+    <div class="cards">${items.slice(0,300).map(insCard).join('')}</div>`;
+  window.scrollTo(0,0);
+}
+
+/* ── Technologies ── */
+function renderTech(v){
+  crumb(['Technologies']);
+  const order=['vitalage','facial_age','exome_clinical','wgs_polygenic','polygenic','pregnancy_nutrition','composite_literature'];
+  const techs=order.map(id=>S.val.technologies.find(t=>t.id===id)).filter(Boolean);
+  v.innerHTML=`<div class="h-eyebrow">Validation evidence library</div>
+    <div class="h-title">Technologies & validation</div>
+    <div class="h-sub">The methods behind the catalog, each with cohorts, metrics, patents, publications, and honest caveats. Every insight's evidence tier links here.</div>`+
+    techs.map(techCard).join('');
+}
+function techCard(t){
+  const cohorts=(t.cohorts||[]).map(c=>`<li><b>${c.name}</b> (${c.n}) — ${c.role}</li>`).join('');
+  const metrics=(t.metrics||[]).map(m=>`<div class="metric"><div class="mv">${m.value}</div><div class="ml">${m.metric}</div></div>`).join('');
+  const method=(t.method||[]).map(m=>`<li>${m}</li>`).join('');
+  const pat=(t.patents||[]).map(p=>`<li>${p}</li>`).join('');
+  const pub=(t.publications||[]).map(p=>`<li>${p}</li>`).join('');
+  const cav=(t.honest_caveats||[]).map(c=>`<li>${c}</li>`).join('');
+  return `<div class="tcard" id="tech-${t.id}">
+    <h3>${t.name}</h3><div class="tt">${t.type}</div>
+    <div class="claim">${t.claim_summary}</div>
+    ${method?`<div class="tsec"><div class="sh">Method</div><ul>${method}</ul></div>`:''}
+    ${metrics?`<div class="tsec"><div class="sh">Validation metrics</div><div class="metric-row">${metrics}</div></div>`:''}
+    ${cohorts?`<div class="tsec"><div class="sh">Cohorts</div><ul>${cohorts}</ul></div>`:''}
+    ${pat?`<div class="tsec"><div class="sh">Patents</div><ul>${pat}</ul></div>`:''}
+    ${pub?`<div class="tsec"><div class="sh">Publications</div><ul>${pub}</ul></div>`:''}
+    ${cav?`<div class="tsec caveats"><div class="sh">Honest caveats</div><ul>${cav}</ul></div>`:''}
+    <div class="tsec" style="margin-top:6px"><div class="ml" style="font-size:11px;color:var(--ink4)">Source: ${t.source_doc}</div></div>
+  </div>`;
+}
+
+/* ── Search ── */
+async function renderSearch(v){
+  const q=S.q.toLowerCase();
+  crumb(['Search', `"${S.q}"`]);
+  let note='';
+  if(!S.exomeLoaded){note=`<div class="inline-load" id="srchload"><span class="spin"></span>Loading exome library to include in search…</div>`}
+  const insAll=allInsights();
+  const insHits=insAll.filter(i=>i.name.toLowerCase().includes(q)||(i.desc||'').toLowerCase().includes(q)).slice(0,150);
+  const bmHits=S.bm.filter(b=>b.biomarker.toLowerCase().includes(q)).slice(0,80);
+  v.innerHTML=`<div class="h-title">Results for "${S.q}"</div>
+    <div class="h-sub">${insHits.length} insight${insHits.length!=1?'s':''} · ${bmHits.length} biomarker${bmHits.length!=1?'s':''}</div>${note}
+    ${bmHits.length?`<div class="fbar"><span class="lbl">Biomarkers</span></div><div class="cards">${bmHits.map(bmCard).join('')}</div>`:''}
+    ${insHits.length?`<div class="fbar"><span class="lbl">Insights</span></div><div class="cards">${insHits.map(insCard).join('')}</div>`:''}
+    ${!insHits.length&&!bmHits.length&&S.exomeLoaded?`<div class="empty"><div class="big">No matches</div>Try a gene, condition, biomarker, or assessment name.</div>`:''}`;
+  if(!S.exomeLoaded){await ensureExome();if(S.q===S.q)renderSearch(v)}
+}
+
+/* ───────── drilldown ───────── */
+async function openIns(name){
+  let i=S.insMap.get(name.toLowerCase());
+  if(!i&&!S.exomeLoaded){await ensureExome();i=S.insMap.get(name.toLowerCase())}
+  if(!i)return;
+  const t=TIERS[i.evidence.tier]||TIERS.composite_literature;
+  const tech=i.evidence.technology?S.val.technologies.find(x=>x.id===i.evidence.technology):null;
+  const tax=i.taxonomy;
+  const progChips=i.programs.map(p=>{const pr=S.progs.find(x=>x.id===p);return `<span class="tag">${pr?pr.name:p}</span>`}).join('');
+  const mk=(i.markers||[]).map(m=>`<span class="mk" onclick="openBm('${esc(m)}')">${m}</span>`).join('')||'<span style="color:var(--ink4);font-size:12px">No constituent markers listed</span>';
+  const strength='<div class="ev-strength">'+[1,2,3,4,5].map(n=>`<i style="${n<=t.s?'background:'+cssv(t.c):''}"></i>`).join('')+'</div>';
+
+  const techMetric=tech&&tech.metrics&&tech.metrics[0]?`<div class="metric" style="margin-top:10px"><div class="mv">${tech.metrics[0].value}</div><div class="ml">${tech.metrics[0].metric}</div></div>`:'';
+  const techMethod=tech&&tech.method?`<ul style="margin-top:8px">${tech.method.slice(0,2).map(m=>`<li>${m}</li>`).join('')}</ul>`:'';
+  const caveats=tech&&tech.honest_caveats?`<div class="tsec caveats" style="margin-top:11px"><div class="sh">Caveats</div><ul>${tech.honest_caveats.map(c=>`<li>${c}</li>`).join('')}</ul></div>`:'';
+  const patents=tech&&tech.patents&&tech.patents.length?`<dl class="kv" style="margin-top:10px"><dt>Patents</dt><dd>${tech.patents.join('; ')}</dd></dl>`:'';
+
+  document.getElementById('panel').innerHTML=`
+    <div class="p-hd">
+      <button class="p-close" onclick="closePanel()">×</button>
+      <div class="p-name">${i.name}</div>
+      <div class="p-hd-meta">${evBadge(i)}${modTag(i)}
+        <div class="lens-tog"><button class="on" onclick="setLens('clinical',this)">Clinical</button><button onclick="setLens('defense',this)">Defensibility</button></div>
+      </div>
+    </div>
+    <div class="p-body">
+      <div class="blk"><div class="blk-h">What it is</div>
+        <dl class="kv">
+          <dt>Description</dt><dd>${i.desc||'—'}</dd>
+          <dt>Output</dt><dd>${i.unit||'—'}</dd>
+          ${i.range?`<dt>Reference</dt><dd>${i.range}</dd>`:''}
+          <dt>Programs</dt><dd>${progChips||'—'}</dd>
+          ${tax?`<dt>Panel</dt><dd>${tax.panel||'—'} <span style="color:var(--ink4)">· ${(tax.category||'').replace(/-/g,' ')}</span></dd>`:''}
+          ${tax&&tax.gender?`<dt>Applies to</dt><dd>${tax.gender==='b'||tax.gender==='m,f'?'All':tax.gender}</dd>`:''}
+        </dl>
+      </div>
+
+      <!-- CLINICAL LENS -->
+      <div class="lens-clinical">
+        <div class="blk"><div class="blk-h">How it's computed</div>
+          ${i.formula?`<div class="formula">${i.formula}</div>`:'<div style="font-size:12.5px;color:var(--ink3)">No closed-form scoring formula on file — this assessment is produced by the '+(MODS[i.src]?MODS[i.src].lbl:i.src)+' pipeline rather than a weighted index.</div>'}
+          <div class="blk-h" style="margin-top:15px">Constituent biomarkers</div><div class="mk-chips">${mk}</div>
+        </div>
+      </div>
+
+      <!-- DEFENSIBILITY LENS -->
+      <div class="lens-defense">
+        <div class="blk"><div class="blk-h">Evidence & defensibility</div>
+          <div class="ev-head">${strength}<span class="tech-link" style="color:${cssv(t.c)}">${t.lbl}</span></div>
+          ${tech?`<div style="font-size:13px;color:var(--ink2);line-height:1.55">${tech.claim_summary}</div>${techMethod}${techMetric}${patents}${i.competitor?`<dl class="kv" style="margin-top:10px"><dt>Competitor</dt><dd>${i.competitor}</dd></dl>`:''}
+            <div style="margin-top:13px"><button class="chip on" onclick="route('tech');closePanel();setTimeout(()=>document.getElementById('tech-${tech.id}')?.scrollIntoView({behavior:'smooth'}),100)">View full technology →</button></div>
+            ${caveats}`:'<div style="font-size:12.5px;color:var(--ink3)">This assessment is a composite/heuristic score; its evidence rests on the published literature of its constituent biomarkers rather than a dedicated validation study.</div>'}
+        </div>
+      </div>
+    </div>`;
+  document.getElementById('panel').setAttribute('data-lens','clinical');
+  document.getElementById('ov').classList.add('show');document.body.style.overflow='hidden';
+}
+function setLens(l,btn){document.getElementById('panel').setAttribute('data-lens',l);
+  btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));btn.classList.add('on')}
+function closePanel(){document.getElementById('ov').classList.remove('show');document.body.style.overflow=''}
+
+/* biomarker → its insights */
+async function openBm(name){
+  const b=S.bmMap.get(name.toLowerCase());
+  const v=document.getElementById('view');closePanel();
+  S.q='';document.getElementById('srch').value='';document.getElementById('srchWrap').classList.remove('has');
+  crumb(['Biomarker Query',name]);
+  if(!b){v.innerHTML=`<div class="empty"><div class="big">${name}</div>Not found in the biomarker index.</div>`;return}
+  const insNames=b.insights||[];
+  v.innerHTML=`<div class="h-eyebrow">Biomarker</div><div class="h-title">${b.biomarker}</div>
+    <div class="h-sub">Feeds ${b.insight_count} insight${b.insight_count!=1?'s':''} across ${b.programs.length} program${b.programs.length!=1?'s':''}, via ${b.srcs.map(s=>MODS[s]?MODS[s].lbl:s).join(', ')}.</div>
+    <div class="fbar"><button class="chip" onclick="route('biomarkers')">← biomarker query</button>
+    ${insNames.length<b.insight_count?`<span class="spacer">showing ${insNames.length} of ${b.insight_count}</span>`:''}</div>
+    <div class="cards" id="bmins"></div>`;
+  // resolve insight objects (lazy-load exome if some missing)
+  let objs=insNames.map(n=>S.insMap.get(n.toLowerCase())).filter(Boolean);
+  if(objs.length<insNames.length&&!S.exomeLoaded){await ensureExome();objs=insNames.map(n=>S.insMap.get(n.toLowerCase())).filter(Boolean)}
+  document.getElementById('bmins').innerHTML=objs.map(insCard).join('')||'<div class="empty">Linked insights are in the exome library.</div>';
+  window.scrollTo(0,0);
+}
+
+/* ───────── search input ───────── */
+let sT;
+document.getElementById('srch').addEventListener('input',e=>{
+  const val=e.target.value.trim();
+  document.getElementById('srchWrap').classList.toggle('has',!!val);
+  clearTimeout(sT);sT=setTimeout(()=>{S.q=val;render()},180);
+});
+function clearSrch(){S.q='';document.getElementById('srch').value='';document.getElementById('srchWrap').classList.remove('has');render()}
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){if(document.getElementById('ov').classList.contains('show'))closePanel();else if(S.q)clearSrch()}});
+
+boot();
+</script>
+</body>
+</html>

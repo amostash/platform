@@ -1,0 +1,219 @@
+{
+ "_meta": {
+  "note": "Technology-level validation library. Each index's evidence.tier maps to a technology id via tier_to_technology. Caveats included for DD honesty.",
+  "tier_to_technology": {
+   "whitepaper_patent": "facial_age",
+   "whitepaper_methylation": "facial_age",
+   "whitepaper_vitalage": "vitalage",
+   "polygenic_method": "polygenic",
+   "exome_clinical": "exome_clinical",
+   "wgs_polygenic": "wgs_polygenic",
+   "composite_literature": "composite_literature",
+   "recommendation": null
+  }
+ },
+ "technologies": [
+  {
+   "id": "vitalage",
+   "name": "VitalAge — Multi-Omics Actuarial Biological Age",
+   "type": "Biological-age / mortality-risk engine",
+   "claim_summary": "Converts multi-modal biometric inputs into a population-calibrated Physiological Age via actuarial mortality mapping rather than linear z-score summation.",
+   "method": [
+    "Actuarial mortality-mapping (PhenoAge framework, Levine et al. 2018): biological age = chronological age of the reference cohort whose all-cause mortality risk equals the individual's computed composite risk.",
+    "Competing-risks product aggregation, bounded [0,1), modeling non-linear cross-domain interactions.",
+    "Quality Integrity Firewall (QIF): real-time cross-modal sensor validation gating implausible readings.",
+    "7-stage pipeline: acquisition → QIF → behavioral anchor synthesis → gated modular computation → non-linear cross-domain integration → competing-risks transform → actuarial age mapping with uncertainty propagation."
+   ],
+   "cohorts": [
+    {
+     "name": "UK Biobank",
+     "n": "500,000+ (analysis n=306,116)",
+     "role": "Biomarker-to-mortality hazard ratios; calibration"
+    },
+    {
+     "name": "NIH All of Us",
+     "n": "target 1,000,000 (>75% underrepresented)",
+     "role": "Demographic-diversity validation of weighting/baselines"
+    }
+   ],
+   "metrics": [
+    {
+     "metric": "Multi-biomarker C-Index (mortality)",
+     "value": "0.778 (95% CI 0.767–0.788)",
+     "note": "~11% relative improvement over single-domain blood PhenoAge"
+    },
+    {
+     "metric": "Explained variance over chronological age",
+     "value": ">65% healthy; >84% whole population"
+    },
+    {
+     "metric": "QIF PPG–ECG agreement",
+     "value": "MAE <1 bpm HR; 6–15 ms HRV"
+    },
+    {
+     "metric": "Skeletal muscle index → 5-yr mortality",
+     "value": "adjusted HR 0.47–0.38 (top vs bottom quartile)"
+    }
+   ],
+   "patents": [
+    "US patent-pending (USPTO filing 19,684,733)"
+   ],
+   "publications": [
+    "Levine et al. PhenoAge, Aging 2018 [foundational]",
+    "Bortz et al. Commun Biol 2023 (UKBB C-index 0.778)",
+    "Chan et al. J Gerontol 2021"
+   ],
+   "source_doc": "LifeNome Multiomics Enhanced VitalAge Technology White Paper",
+   "honest_caveats": [
+    "C-index 0.778 is the published cohort benchmark, not necessarily a prospective validation of Lifenome's specific composite on an independent hold-out.",
+    "Targets stated as '≥0.78' / 'significant at p<0.05' are design targets in the white paper's metrics table."
+   ]
+  },
+  {
+   "id": "facial_age",
+   "name": "Facial Biological Age (methylation-correlated)",
+   "type": "Imaging biological-age model",
+   "claim_summary": "Smartphone-camera facial image → biological-age estimate correlated to methylation-clock signals.",
+   "method": [
+    "Face-image features (periorbital, texture, wrinkle, symmetry) mapped to methylation-age correlates."
+   ],
+   "cohorts": [],
+   "metrics": [],
+   "patents": [
+    "US20240371202A1 — facial biological age from methylation markers + face image"
+   ],
+   "publications": [
+    "Vladimir, Perišić et al. Epigenetics insights from perceived facial aging, Clinical Epigenetics 2023 (featured in New Scientist)"
+   ],
+   "source_doc": "Genomics AI white papers; VitalAge white paper",
+   "honest_caveats": [
+    "Camera-derived age is presented as correlated with methylation/epigenetic signal, not a direct methylation assay."
+   ]
+  },
+  {
+   "id": "polygenic",
+   "name": "Genomics AI — Polygenic Risk Scoring",
+   "type": "Genomic predisposition engine (array / exome / WGS)",
+   "claim_summary": "Polygenic scores estimate predisposition across many conditions via cumulative variant effects, combined with dynamic network analysis + machine learning.",
+   "method": [
+    "Polygenic phenotypic-trait predisposition via dynamic network analysis + ML (patented).",
+    "API outputs per trait: risk score (low/med/high), percentile vs reference, odds ratio for top-10% vs bottom-50% PRS, predisposing variants (SNPs), tested genes, coverage reliability score, scientific references."
+   ],
+   "cohorts": [],
+   "metrics": [
+    {
+     "metric": "Output transparency",
+     "value": "per-trait variants, genes, percentile, OR(top10%/bottom50%), coverage reliability"
+    }
+   ],
+   "patents": [
+    "US20200026822A1 — polygenic trait predisposition via dynamic network analysis + ML (2018)"
+   ],
+   "publications": [
+    "Perišić et al. PRS & risk factors for Gestational Diabetes, J Pers Med 2022",
+    "Perišić et al. PRS & risk factors for Preeclampsia/Gestational Hypertension, J Pers Med 2022"
+   ],
+   "source_doc": "Empowering Personalized Medicine / Longevity / Wellbeing; Exome Clinical Reporting; MultiModal Clinical Risk Assessment",
+   "honest_caveats": [
+    "PRS portability across ancestries is a general field limitation; per-trait validation strength varies by trait.",
+    "Coverage reliability score reflects genotype completeness, not predictive validity of the score."
+   ]
+  },
+  {
+   "id": "pregnancy_nutrition",
+   "name": "Pregnancy & Nutrition Personalization PRS",
+   "type": "Condition-specific PRS + nutrition optimization",
+   "claim_summary": "PRS-driven risk assessment and personalized nutrition for preconception/pregnancy/postpartum.",
+   "method": [
+    "Condition-specific PRS (e.g., gestational diabetes) feeding personalized nutrition optimization."
+   ],
+   "cohorts": [],
+   "metrics": [],
+   "patents": [
+    "US20230074814A1 — personalized nutrition optimization (preconception/pregnancy/lactation)",
+    "US20230187079A1 — gestational diabetes risk + personalized nutrition"
+   ],
+   "publications": [
+    "Perišić et al. J Pers Med 2022 (gestational diabetes PRS)"
+   ],
+   "source_doc": "Genomics AI white papers",
+   "honest_caveats": [
+    "Nutrition-plan efficacy claims are method/patent descriptions, not outcome-trial results."
+   ]
+  },
+  {
+   "id": "composite_literature",
+   "name": "Composite / Heuristic Indices",
+   "type": "Weighted composite scores",
+   "claim_summary": "Lifestyle, blood, wearable and mixed-input scores combined via stated weighting formulas.",
+   "method": [
+    "Transparent weighted formulas over normalized constituent biomarkers (formula shown per index)."
+   ],
+   "cohorts": [],
+   "metrics": [],
+   "patents": [],
+   "publications": [
+    "Evidence rests on the published literature of each constituent biomarker, not a Lifenome white paper."
+   ],
+   "source_doc": "Biomarker Database (scoring formulas)",
+   "honest_caveats": [
+    "These are the majority of indices (~172/260). Weighting coefficients are design choices; treat as decision-support heuristics absent index-level outcome validation."
+   ]
+  },
+  {
+   "id": "exome_clinical",
+   "name": "Exome+ Clinical Reporting",
+   "type": "Clinical-grade WES variant interpretation",
+   "claim_summary": "Automated clinical interpretation of whole-exome (VCF) data into ACMG-tiered findings across 132 panels / 14 medical domains.",
+   "method": [
+    "WES VCF → variant annotation via curated gene panels (CGD, ClinGen, DECIPHER/DDG2P, BabySeq G2P) + variant repositories (HGMD, ClinVar).",
+    "ACMG pathogenicity classification (Pathogenic / Likely Pathogenic / VUS).",
+    "Structured report: primary findings, secondary (medically actionable) findings, VUS, per-variant annotations (gene, transcript, zygosity, effect, ACMG tier, allele freq, in-silico, literature)."
+   ],
+   "cohorts": [],
+   "metrics": [
+    {
+     "metric": "Panel coverage",
+     "value": "132 panels across 14 medical domains; 3,096 unique traits"
+    },
+    {
+     "metric": "Standards alignment",
+     "value": "ACMG guidelines; clinical-grade curated databases"
+    }
+   ],
+   "patents": [
+    "US20200026822A1 (platform genomics method)"
+   ],
+   "publications": [],
+   "source_doc": "Exome + Clinical Reporting on the Lifenome Genomics AI Platform (White Paper, Jul 2025)",
+   "honest_caveats": [
+    "Per the white paper, several pipeline stages are marked 'in development': gnomAD population filtering, in-silico prediction (SIFT/PolyPhen-2/MutationTaster), and phenotype mapping.",
+    "Coverage reliability score reflects genotype completeness, not clinical validity.",
+    "Intended for physician/clinician review; not an autonomous diagnostic."
+   ]
+  },
+  {
+   "id": "wgs_polygenic",
+   "name": "WGS Polygenic Precision Medicine",
+   "type": "Whole-genome polygenic risk reporting",
+   "claim_summary": "Polygenic risk scoring applied to whole-genome input for precision-medicine trait predisposition.",
+   "method": [
+    "Genotype (WGS) → polygenic scores via the dynamic-network-analysis + ML method (US20200026822A1).",
+    "Per-trait outputs mirror the array PRS engine: risk score, percentile, OR(top10%/bottom50%), variants, genes, coverage reliability."
+   ],
+   "cohorts": [],
+   "metrics": [],
+   "patents": [
+    "US20200026822A1"
+   ],
+   "publications": [
+    "Perišić et al. J Pers Med 2022 (PRS validation examples)"
+   ],
+   "source_doc": "WGS Polygenic Precision Medicine Report (White Paper)",
+   "honest_caveats": [
+    "PRS ancestry portability is a general field limitation; per-trait validation strength varies.",
+    "WGS vs array differ in input breadth, not in the underlying scoring method's validation."
+   ]
+  }
+ ]
+}
